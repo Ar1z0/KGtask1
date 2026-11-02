@@ -56,28 +56,68 @@ public class Sky {
     public void draw(GraphicsContext gc) {
         drawSky(gc);
         drawMoon(gc);
+        drawClouds(gc);
+        drawShootingStar(gc);
         drawStars(gc);
     }
 
-    // небо на весь экран
+    // небо
     private void drawSky(GraphicsContext gc) {
         gc.setFill(skyColor);
         gc.fillRect(0, 0, width, height);
     }
 
-    // луна со свечением вокруг
+    // луна
     private void drawMoon(GraphicsContext gc) {
         double moonX = 213;
         double moonY = 110;
         double r = 29;
 
-        // ореол
+        // свечение
         gc.setFill(Color.color(1.0, 1.0, 1.0, 0.08));
-        gc.fillOval(moonX - 38, moonY - 38, 76, 76);
+        gc.fillOval(moonX - 44, moonY - 44, 88, 88);
+
+        // ореол
+        gc.setFill(Color.color(1.0, 1.0, 1.0, 0.14));
+        gc.fillOval(moonX - 35, moonY - 35, 70, 70);
 
         // сама луна
-        gc.setFill(Color.WHITE);
+        gc.setFill(Color.rgb(250, 250, 245));
         gc.fillOval(moonX - r, moonY - r, r * 2, r * 2);
+
+        // кратеры
+        gc.setFill(Color.color(0.82, 0.85, 0.90, 0.45));
+        gc.fillOval(moonX - 11, moonY - 8, 9, 7);
+        gc.fillOval(moonX + 5, moonY + 2, 11, 9);
+        gc.fillOval(moonX - 4, moonY + 11, 7, 6);
+        gc.fillOval(moonX + 9, moonY - 12, 6, 5);
+    }
+
+    // облака
+    private void drawClouds(GraphicsContext gc) {
+        drawCloud(gc, 380, 85, 1.1);
+        drawCloud(gc, 100, 185, 0.9);
+        drawCloud(gc, 680, 210, 1.2);
+    }
+
+    // облако
+    private void drawCloud(GraphicsContext gc, double x, double y, double scale) {
+        gc.setFill(Color.color(0.20, 0.40, 0.65, 0.22));
+        gc.fillOval(x, y, 65 * scale, 24 * scale);
+        gc.fillOval(x + 18 * scale, y - 9 * scale, 52 * scale, 28 * scale);
+        gc.fillOval(x + 45 * scale, y - 3 * scale, 55 * scale, 22 * scale);
+        gc.fillOval(x + 20 * scale, y + 4 * scale, 65 * scale, 18 * scale);
+    }
+
+    // падающая звезда
+    private void drawShootingStar(GraphicsContext gc) {
+        gc.setStroke(Color.color(1.0, 1.0, 1.0, 0.65));
+        gc.setLineWidth(1.4);
+        gc.strokeLine(630, 42, 675, 62);
+
+        // след звезды
+        gc.setFill(Color.WHITE);
+        gc.fillOval(674, 61, 2.5, 2.5);
     }
 
     // россыпь звезд
@@ -86,7 +126,7 @@ public class Sky {
         for (Star s : stars) {
             gc.fillOval(s.x - s.radius, s.y - s.radius, s.radius * 2, s.radius * 2);
 
-            // для ярких звездочек рисуем маленький блеск
+            // блеск для крупных звезд
             if (s.radius > 2.0) {
                 gc.setStroke(Color.color(1.0, 1.0, 1.0, 0.7));
                 gc.setLineWidth(0.8);

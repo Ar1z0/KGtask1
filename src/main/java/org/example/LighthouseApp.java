@@ -64,7 +64,7 @@ public class LighthouseApp extends Application {
         // башня маяка
         lighthouse.draw(gc);
 
-        // кораблик
+        // корабль
         boat.draw(gc);
 
         // луч света от маяка
